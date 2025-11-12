@@ -326,15 +326,7 @@ Este proyecto es privado y propietario. Todos los derechos reservados.
 
 ## 👥 Equipo
 
-- **Desarrollador Principal:** [Tu Nombre]
-- **Arquitecto de Seguridad:** [Nombre]
-- **DevOps Engineer:** [Nombre]
-
-## 📞 Soporte
-
-- **Issues:** GitHub Issues
-- **Email:** quickcart-support@company.com
-- **Documentación:** [Wiki del proyecto]
+- **Desarrollador Principal y Arquitecto:** Julio Gomez
 
 ---
 

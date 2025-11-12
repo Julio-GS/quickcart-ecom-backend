@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from '@infrastructure/database/database.module';
 import { SharedModule } from '@shared/shared.module';
 import { AuthModule } from '@application/auth/auth.module';
+import { UserModule } from '@application/users/user.module';
 import { configValidationSchema } from '@shared/config/env.validation';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -30,8 +31,10 @@ import { AppService } from './app.service';
     // Authentication and Authorization
     AuthModule,
 
-    // Feature modules will be added here
-    // UsersModule,
+    // Feature modules
+    UserModule,
+
+    // Future modules
     // ProductsModule,
     // OrdersModule,
   ],
