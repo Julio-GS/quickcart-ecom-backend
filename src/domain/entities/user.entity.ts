@@ -9,10 +9,10 @@ export enum UserRole {
 
 /**
  * User Entity - Usuarios del sistema (Admin y Clientes)
- * Coincide exactamente con el esquema PostgreSQL existente
+ * Tabla separada de Supabase auth para evitar conflictos
  * Implementa RBAC (Role-Based Access Control) para OWASP A01: Broken Access Control
  */
-@Entity('users')
+@Entity('app_users') // Cambiado de 'users' a 'app_users'
 @Index(['email']) // Optimización para login
 export class User extends BaseEntity {
   @Column({
@@ -43,6 +43,18 @@ export class User extends BaseEntity {
     default: UserRole.CLIENT,
   })
   role: UserRole;
+
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  phone?: string;
+
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
+  address?: string;
 
   // Relations
   @OneToMany(() => Order, (order) => order.user)
