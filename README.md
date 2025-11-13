@@ -1,144 +1,88 @@
-# QuickCart E-commerce Backend API
+# QuickCart E-commerce Backend
 
-## 🚀 Descripción
+## � Descripción
 
-**QuickCart** es una plataforma de e-commerce moderna desarrollada con **NestJS**, **TypeORM** y **PostgreSQL** (Supabase). El proyecto sigue principios de **Clean Architecture**, **SOLID** y mejores prácticas de **DevSecOps** orientadas a OWASP Top 10.
-
-### ⚡ Características Principales
-
-- **Arquitectura Limpia:** Separación clara entre capas de dominio, aplicación e infraestructura
-- **Seguridad First:** Validación rigurosa, sanitización de datos y protección OWASP
-- **TypeScript:** Tipado fuerte y desarrollo orientado a tipos
-- **Testing:** Cobertura mínima del 80% con Jest
-- **PostgreSQL:** Base de datos ACID confiable con TypeORM
-- **Documentación API:** Swagger/OpenAPI automático
-- **Docker Ready:** Containerización lista para producción
+API RESTful robusta para plataforma de e-commerce desarrollada con tecnologías empresariales modernas. Implementa principios de Clean Architecture, SOLID y estándares de seguridad OWASP.
 
 ## 🛠️ Stack Tecnológico
 
-| Tecnología     | Versión | Propósito           |
-| -------------- | ------- | ------------------- |
-| **Node.js**    | 18+     | Runtime             |
-| **NestJS**     | 10.x    | Framework backend   |
-| **TypeScript** | 5.x     | Lenguaje principal  |
-| **TypeORM**    | 0.3.x   | ORM para PostgreSQL |
-| **PostgreSQL** | 15+     | Base de datos       |
-| **Jest**       | 29.x    | Testing framework   |
-| **Swagger**    | 7.x     | Documentación API   |
-| **Docker**     | Latest  | Containerización    |
+- **Framework:** NestJS 10.x con TypeScript
+- **ORM:** TypeORM con PostgreSQL
+- **Seguridad:** JWT, bcrypt, validación de esquemas
+- **Documentación:** Swagger/OpenAPI
+- **Testing:** Jest con cobertura >80%
 
-## 🚦 Inicio Rápido
+## ✨ Características
 
-### Prerequisitos
+### Arquitectura
 
-- **Node.js** 18+
-- **npm** 9+
-- **PostgreSQL** 15+ (o cuenta Supabase)
-- **Docker** (opcional)
+- **Clean Architecture** con separación de capas
+- **Repository Pattern** para abstracción de datos
+- **Dependency Injection** con IoC container
+- **SOLID Principles** aplicados consistentemente
 
-### 1. Instalación
+### Seguridad
+
+- Autenticación JWT con refresh tokens
+- Autorización basada en roles (RBAC)
+- Validación exhaustiva de entrada de datos
+- Rate limiting y headers de seguridad
+- Cumplimiento OWASP Top 10
+
+### API Features
+
+- Endpoints RESTful con paginación
+- Filtrado y búsqueda avanzada
+- Documentación interactiva con Swagger
+- Manejo de errores estructurado
+- Logging y monitoreo
+
+## 🏗️ Estructura del Proyecto
+
+```
+src/
+├── domain/           # Entidades y lógica de negocio
+├── application/      # Casos de uso y DTOs
+├── infrastructure/   # Implementaciones externas
+└── shared/           # Utilidades compartidas
+```
+
+## 🚀 Instalación y Desarrollo
+
+### Requisitos Previos
+
+- Node.js 18+
+- PostgreSQL 15+
+- npm 9+
+
+### Configuración
 
 ```bash
-# Clonar repositorio
-git clone <repository-url>
-cd quickcart-ecom-backend
-
 # Instalar dependencias
 npm install
 
 # Configurar variables de entorno
 cp .env.example .env
-# Editar .env con tus configuraciones
-```
+# Editar .env con tu configuración
 
-### 2. Configuración de Base de Datos
+# Ejecutar migraciones
+npm run migration:run
 
-#### Opción A: Supabase (Recomendado)
-
-1. Crear proyecto en [supabase.com](https://supabase.com)
-2. Obtener credenciales de conexión
-3. Actualizar `.env` con los datos de Supabase
-
-#### Opción B: PostgreSQL Local
-
-```bash
-# Usando Docker Compose
-docker-compose up postgres -d
-
-# O instalar PostgreSQL manualmente
-# y crear base de datos 'quickcart-db'
-```
-
-### 3. Ejecución
-
-```bash
-# Desarrollo
+# Iniciar servidor de desarrollo
 npm run start:dev
-
-# Producción
-npm run build
-npm run start:prod
-
-# Con Docker
-docker-compose up
 ```
 
-## 📝 Variables de Entorno
+### Variables de Entorno
 
-Crea un archivo `.env` basado en `.env.example`:
+Configurar en archivo `.env`:
 
 ```env
-# Application
 NODE_ENV=development
 PORT=3000
-
-# Database (Supabase)
-DATABASE_HOST=your-supabase-host
-DATABASE_PORT=5432
-DATABASE_USERNAME=your-username
-DATABASE_PASSWORD=your-password
-DATABASE_NAME=quickcart-db
-DATABASE_URL=postgresql://user:pass@host:5432/db
-
-# Security
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
+DATABASE_URL=postgresql://localhost/quickcart_db
+JWT_SECRET=your-secret-key
 JWT_EXPIRES_IN=24h
-BCRYPT_SALT_ROUNDS=12
-
-# API Configuration
-CORS_ORIGIN=http://localhost:3001
-RATE_LIMIT_TTL=60
-RATE_LIMIT_LIMIT=100
 ```
-
-## 🏗️ Arquitectura del Proyecto
-
-```
-src/
-├── domain/           # Entidades y reglas de negocio
-│   ├── entities/     # Entidades TypeORM
-│   └── interfaces/   # Contratos de dominio
-├── application/      # Casos de uso y DTOs
-│   ├── services/     # Lógica de aplicación
-│   └── dto/          # Data Transfer Objects
-├── infrastructure/   # Implementaciones externas
-│   ├── database/     # Configuración TypeORM
-│   └── repositories/ # Implementación de repositorios
-├── presentation/     # Controladores y APIs
-│   └── controllers/  # Endpoints REST
-└── shared/          # Utilidades compartidas
-    ├── config/      # Configuraciones
-    ├── dto/         # DTOs base
-    └── utils/       # Utilidades comunes
-```
-
-### Principios Aplicados
-
-- **Single Responsibility (SRP):** Cada clase tiene una única responsabilidad
-- **Open/Closed (OCP):** Extensible sin modificar código existente
-- **Liskov Substitution (LSP):** Subclases reemplazables por clases base
-- **Interface Segregation (ISP):** Interfaces específicas y cohesivas
-- **Dependency Inversion (DIP):** Dependencia de abstracciones, no implementaciones
 
 ## 🧪 Testing
 
@@ -146,188 +90,110 @@ src/
 # Tests unitarios
 npm run test
 
-# Tests unitarios en modo watch
-npm run test:watch
-
 # Tests E2E
 npm run test:e2e
 
-# Cobertura de código
+# Cobertura
 npm run test:cov
 ```
 
-### Estructura de Tests
-
-- **Unitarios:** `src/**/*.spec.ts`
-- **E2E:** `test/**/*.e2e-spec.ts`
-- **Cobertura mínima:** 80%
-
-## 📊 Base de Datos
-
-### Migraciones
-
-```bash
-# Generar migración
-npm run migration:generate
-
-# Ejecutar migraciones
-npm run migration:run
-
-# Revertir migración
-npm run migration:revert
-```
-
-### Entidades Base
-
-Todas las entidades extienden de `BaseEntity`:
-
-```typescript
-export abstract class BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt?: Date;
-}
-```
-
-## 🔒 Seguridad (OWASP)
-
-### Medidas Implementadas
-
-- **A03 - Injection:** Validación estricta con `class-validator`
-- **A04 - Insecure Design:** Rate limiting y validación de schemas
-- **A05 - Security Misconfiguration:** Configuración validada con Joi
-- **A06 - Vulnerable Components:** Dependencias actualizadas regularmente
-- **A07 - Authentication:** JWT con expiración configurable
-
-### Headers de Seguridad
-
-```typescript
-// Helmet configurado en main.ts
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      /* ... */
-    },
-    // Más configuraciones de seguridad
-  }),
-);
-```
-
-## 📚 API Documentación
+## 📚 Documentación API
 
 - **Swagger UI:** `http://localhost:3000/api/docs`
 - **Health Check:** `http://localhost:3000/api/v1`
 
-### Autenticación API
+### Módulos API
 
-```bash
-# Ejemplo de request autenticado
-curl -H "Authorization: Bearer <JWT_TOKEN>" \
-     http://localhost:3000/api/v1/users/profile
-```
+#### Autenticación
+
+- `POST /auth/register` - Registro de usuarios
+- `POST /auth/login` - Inicio de sesión
+- `GET /auth/profile` - Perfil de usuario
+
+#### Productos
+
+- `GET /products` - Listado con filtros y paginación
+- `GET /products/:id` - Producto específico
+- `POST /products` - Crear producto (Admin)
+- `PUT /products/:id` - Actualizar producto (Admin)
+- `DELETE /products/:id` - Eliminar producto (Admin)
+
+#### Usuarios
+
+- `GET /users` - Listado de usuarios (Admin)
+- `GET /users/:id` - Usuario específico
+- `PUT /users/:id` - Actualizar usuario
 
 ## 🐳 Docker
 
-### Desarrollo
-
 ```bash
-# Todas las dependencias
-docker-compose up
-
-# Solo base de datos
-docker-compose up postgres redis
-```
-
-### Producción
-
-```bash
-# Build imagen
+# Construcción
 docker build -t quickcart-api .
 
-# Ejecutar contenedor
-docker run -p 3000:3000 quickcart-api
+# Ejecución con docker-compose
+docker-compose up
 ```
 
 ## 📋 Scripts Disponibles
 
-| Script               | Descripción                    |
-| -------------------- | ------------------------------ |
-| `npm run start:dev`  | Desarrollo con hot-reload      |
-| `npm run build`      | Compilar para producción       |
-| `npm run start:prod` | Ejecutar versión de producción |
-| `npm run test`       | Tests unitarios                |
-| `npm run test:e2e`   | Tests end-to-end               |
-| `npm run lint`       | Análisis de código             |
-| `npm run format`     | Formatear código               |
+| Script          | Descripción               |
+| --------------- | ------------------------- |
+| `start:dev`     | Desarrollo con hot-reload |
+| `build`         | Compilar para producción  |
+| `start:prod`    | Ejecutar en producción    |
+| `test`          | Ejecutar tests            |
+| `lint`          | Análisis de código        |
+| `migration:run` | Ejecutar migraciones      |
 
-## 🔧 Configuración IDE
+## 🔄 Flujo de Desarrollo
 
-### VS Code (Recomendado)
+1. Crear rama feature desde `main`
+2. Implementar cambios con tests
+3. Verificar cobertura >80%
+4. Pull request con revisión de código
+5. Merge después de aprobación
 
-Extensiones sugeridas:
+### Convenciones
 
-- **NestJS Files**
-- **TypeScript Importer**
-- **Thunder Client** (testing API)
-- **Docker**
-- **PostgreSQL**
+- **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`)
+- **Código:** ESLint + Prettier configurados
+- **Naming:** camelCase variables, PascalCase clases
+
+## � Roadmap
+
+### Implementado ✅
+
+- Sistema de autenticación JWT
+- CRUD completo de productos
+- Módulo de usuarios con RBAC
+- Documentación API automática
+
+### En Desarrollo 🚧
+
+- Sistema de órdenes y carritos
+- Migraciones de base de datos
+- Testing exhaustivo
+
+### Planeado 📅
+
+- Cache con Redis
+- Notificaciones en tiempo real
+- Microservicios
+- CI/CD pipeline
 
 ## 🤝 Contribución
 
-### Flujo de Desarrollo
+Proyecto en desarrollo activo. Para contribuir:
 
-1. **Fork** del repositorio
-2. **Crear rama** feature: `git checkout -b feature/nueva-funcionalidad`
-3. **Commits** descriptivos: `git commit -m "feat: agregar autenticación JWT"`
-4. **Tests** obligatorios con cobertura >= 80%
-5. **Pull Request** con descripción detallada
-
-### Convenciones de Código
-
-- **Naming:** camelCase para variables, PascalCase para clases
-- **Files:** kebab-case para archivos, `.entity.ts`, `.service.ts`, `.controller.ts`
-- **Commits:** Conventional Commits (`feat:`, `fix:`, `docs:`, etc.)
-
-## 🚀 Roadmap
-
-### Fase 1 - MVP (Actual)
-
-- [x] Setup base con NestJS + TypeORM
-- [x] Autenticación y autorización
-- [x] CRUD básico de productos
-- [x] Sistema de órdenes
-
-### Fase 2 - Características Avanzadas
-
-- [ ] Microservicios con NestJS
-- [ ] Cache con Redis
-- [ ] Search con Elasticsearch
-- [ ] Notifications en tiempo real
-- [ ] File uploads con S3
-
-### Fase 3 - Escalabilidad
-
-- [ ] Kubernetes deployment
-- [ ] Monitoring con Prometheus
-- [ ] Logging distribuido
-- [ ] CI/CD con GitHub Actions
+1. Fork del repositorio
+2. Crear feature branch
+3. Implementar con tests
+4. Crear pull request
 
 ## 📄 Licencia
 
-Este proyecto es privado y propietario. Todos los derechos reservados.
-
-## 👥 Equipo
-
-- **Desarrollador Principal y Arquitecto:** Julio Gomez
+Proyecto propietario. Todos los derechos reservados.
 
 ---
 
-**🎯 ¡QuickCart - E-commerce del Futuro!** 🛒✨
+_Construido con 💚 para ofrecer la mejor experiencia de e-commerce_

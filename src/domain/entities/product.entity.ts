@@ -4,6 +4,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  UpdateDateColumn,
   Index,
 } from 'typeorm';
 import { OrderItem } from './order-item.entity';
@@ -82,6 +83,13 @@ export class Product {
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp with time zone',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 
   // Relations
   @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
