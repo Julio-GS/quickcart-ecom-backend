@@ -7,6 +7,7 @@ import { SharedModule } from '@shared/shared.module';
 import { AuthModule } from '@application/auth/auth.module';
 import { UserModule } from '@application/users/user.module';
 import { ProductModule } from '@application/products/product.module';
+import { OrderModule } from '@application/orders/order.module';
 import { configValidationSchema } from '@shared/config/env.validation';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -35,9 +36,9 @@ import { AppService } from './app.service';
     // Feature modules
     UserModule,
     ProductModule,
+    OrderModule,
 
     // Future modules
-    // OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

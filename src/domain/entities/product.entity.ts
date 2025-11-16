@@ -15,9 +15,9 @@ import { OrderItem } from './order-item.entity';
  * Incluye optimizaciones para filtros dinámicos y performance frontend
  */
 @Entity('products')
-@Index('idx_products_category_name', ['category', 'name']) // Índice para búsquedas y filtros
+@Index('idx_products_category_name', ['category', 'name'])
 export class Product {
-  @PrimaryGeneratedColumn('increment') // SERIAL PRIMARY KEY
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({

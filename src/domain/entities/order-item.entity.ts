@@ -15,9 +15,9 @@ import { Product } from './product.entity';
  * Tabla de relación N:M (Pedido:Producto) con detalles de transacción
  */
 @Entity('order_items')
-@Unique(['orderId', 'productId']) // Restricción de unicidad
+@Unique(['orderId', 'productId'])
 export class OrderItem {
-  @PrimaryGeneratedColumn('increment') // SERIAL PRIMARY KEY
+  @PrimaryGeneratedColumn('increment')
   id: number;
 
   @ManyToOne(() => Order, {

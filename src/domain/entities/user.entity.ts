@@ -12,8 +12,8 @@ export enum UserRole {
  * Tabla separada de Supabase auth para evitar conflictos
  * Implementa RBAC (Role-Based Access Control) para OWASP A01: Broken Access Control
  */
-@Entity('app_users') // Cambiado de 'users' a 'app_users'
-@Index(['email']) // Optimización para login
+@Entity('app_users')
+@Index(['email'])
 export class User extends BaseEntity {
   @Column({
     type: 'text',
