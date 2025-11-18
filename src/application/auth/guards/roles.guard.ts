@@ -5,7 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from '@domain/entities/user.entity';
+import { UserRole } from '../../../domain/entities/user.entity';
 
 /**
  * RolesGuard - Guard para autorización basada en roles (RBAC)

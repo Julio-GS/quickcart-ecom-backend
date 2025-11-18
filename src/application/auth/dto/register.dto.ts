@@ -7,7 +7,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { UserRole } from '@domain/entities/user.entity';
+import { UserRole } from '../../../domain/entities/user.entity';
 
 /**
  * RegisterDto - DTO para registro de nuevos usuarios

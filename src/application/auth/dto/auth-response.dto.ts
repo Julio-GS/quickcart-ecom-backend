@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserRole } from '@domain/entities/user.entity';
+import { UserRole } from '../../../domain/entities/user.entity';
 
 /**
  * UserInfoDto - Información básica del usuario autenticado

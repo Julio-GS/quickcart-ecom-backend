@@ -48,7 +48,11 @@ ADMIN_PASSWORD=Admin123!
 npm run start:dev
 
 # Desde cualquier origen (React, Postman, curl):
-curl http://localhost:3001/api/v1/products
+curl http://localhost:3000/api/v1/products
+
+# Otros endpoints de prueba:
+curl http://localhost:3000/api/v1/products/categories
+curl http://localhost:3000/api/v1/products/featured
 ```
 
 ## 🌐 **URLs después del Deploy**
@@ -65,7 +69,7 @@ curl http://localhost:3001/api/v1/products
 const API_BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://tu-proyecto.vercel.app/api/v1'
-    : 'http://localhost:3001/api/v1';
+    : 'http://localhost:3000/api/v1';
 
 // Fetch desde cualquier puerto local
 fetch(`${API_BASE_URL}/products`)

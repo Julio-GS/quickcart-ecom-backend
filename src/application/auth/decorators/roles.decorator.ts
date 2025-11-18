@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { UserRole } from '@domain/entities/user.entity';
+import { UserRole } from '../../../domain/entities/user.entity';
 
 /**
  * Decorador @Roles - Define los roles requeridos para acceder a un endpoint
