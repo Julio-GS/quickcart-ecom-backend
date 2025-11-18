@@ -10,6 +10,7 @@ import {
   Matches,
   IsNotEmpty,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProductDto {
@@ -83,12 +84,13 @@ export class CreateProductDto {
 
   @ApiProperty({
     description: 'Categoría del producto',
-    example: 'Electrónicos',
+    example: 'ELECTRONICOS',
     maxLength: 100,
   })
   @IsNotEmpty({ message: 'La categoría es obligatoria' })
   @IsString()
   @MaxLength(100, { message: 'La categoría no debe exceder 100 caracteres' })
+  @Transform(({ value }) => value?.trim().toUpperCase())
   category: string;
 
   @ApiProperty({

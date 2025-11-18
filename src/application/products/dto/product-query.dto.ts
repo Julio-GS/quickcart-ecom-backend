@@ -50,12 +50,13 @@ export class ProductQueryDto {
 
   @ApiPropertyOptional({
     description: 'Filtrar por categoría específica',
-    example: 'Electrónicos',
+    example: 'ELECTRONICOS',
     maxLength: 100,
   })
   @IsOptional()
   @IsString()
   @MaxLength(100, { message: 'La categoría no debe exceder 100 caracteres' })
+  @Transform(({ value }) => value?.trim().toUpperCase())
   category?: string;
 
   @ApiPropertyOptional({

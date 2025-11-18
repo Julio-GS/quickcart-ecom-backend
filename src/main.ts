@@ -9,7 +9,9 @@ import rateLimit from 'express-rate-limit';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log'], // Disable debug and verbose logs
+  });
   const configService = app.get(ConfigService);
 
   // Security middleware
@@ -52,13 +54,69 @@ async function bootstrap() {
     }),
   );
 
-  // CORS configuration
-  app.enableCors({
-    origin: configService.get<string>('CORS_ORIGIN', 'http://localhost:3001'),
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  });
+  // CORS configuration - Flexible for development and production
+  const corsOrigin = configService.get<string>('CORS_ORIGIN', '*');
+  const nodeEnv = configService.get<string>('NODE_ENV', 'development');
+
+  // Development: Allow all origins for testing
+  // Production: Use specific origins from environment variable
+  const corsConfig =
+    nodeEnv === 'development'
+      ? {
+          origin: true, // Allow all origins in development
+          methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+          allowedHeaders: [
+            'Content-Type',
+            'Authorization',
+            'Accept',
+            'Origin',
+            'X-Requested-With',
+          ],
+          exposedHeaders: ['Authorization'],
+          credentials: true,
+          optionsSuccessStatus: 200,
+        }
+      : {
+          origin: (origin, callback) => {
+            // Allow requests with no origin (mobile apps, curl, Postman)
+            if (!origin) return callback(null, true);
+
+            const allowedOrigins = corsOrigin.split(',').map((o) => o.trim());
+
+            // Check if origin is allowed
+            if (
+              allowedOrigins.includes('*') ||
+              allowedOrigins.includes(origin)
+            ) {
+              return callback(null, true);
+            }
+
+            // Allow localhost and Vercel domains for testing
+            if (
+              origin.includes('localhost') ||
+              origin.includes('127.0.0.1') ||
+              origin.includes('vercel.app') ||
+              origin.includes('netlify.app')
+            ) {
+              return callback(null, true);
+            }
+
+            return callback(new Error(`Origin ${origin} not allowed by CORS`));
+          },
+          methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+          allowedHeaders: [
+            'Content-Type',
+            'Authorization',
+            'Accept',
+            'Origin',
+            'X-Requested-With',
+          ],
+          exposedHeaders: ['Authorization'],
+          credentials: true,
+          optionsSuccessStatus: 200,
+        };
+
+  app.enableCors(corsConfig);
 
   // Global prefix
   app.setGlobalPrefix('api/v1');
@@ -90,11 +148,14 @@ async function bootstrap() {
     });
   }
 
-  const port = configService.get<number>('PORT', 3000);
+  const port = configService.get<number>('PORT', 3001);
+
   await app.listen(port);
 
-  console.log(`🚀 QuickCart Backend running on port ${port}`);
-  console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
+  console.log(`🚀 QuickCart Backend running on port ${port} (${nodeEnv})`);
+  if (nodeEnv !== 'production') {
+    console.log(`📚 API Documentation: http://localhost:${port}/api/docs`);
+  }
 }
 
 bootstrap().catch((error) => {

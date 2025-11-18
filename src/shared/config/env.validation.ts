@@ -23,8 +23,8 @@ export const configValidationSchema = Joi.object({
   JWT_SECRET: Joi.string().min(32).optional(),
   JWT_EXPIRES_IN: Joi.string().default('24h'),
 
-  // CORS
-  CORS_ORIGIN: Joi.string().uri().default('http://localhost:3001'),
+  // CORS - Support comma-separated list of origins (frontend on port 3000)
+  CORS_ORIGIN: Joi.string().default('http://localhost:3000'),
 
   // Rate Limiting
   RATE_LIMIT_TTL: Joi.number().positive().default(60),

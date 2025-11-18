@@ -49,8 +49,6 @@ import { UserRole } from '../../domain/entities/user.entity';
  */
 @ApiTags('Productos')
 @Controller('products')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@ApiBearerAuth()
 export class ProductController {
   private readonly logger = new Logger(ProductController.name);
 
@@ -60,7 +58,9 @@ export class ProductController {
    * Crear nuevo producto (Solo Admin)
    */
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Crear producto',
@@ -95,10 +95,9 @@ export class ProductController {
   }
 
   /**
-   * Obtener productos con filtros y paginación
+   * Obtener productos con filtros y paginación (PÚBLICO)
    */
   @Get()
-  @Roles(UserRole.ADMIN, UserRole.CLIENT)
   @ApiOperation({
     summary: 'Listar productos',
     description:
@@ -169,10 +168,9 @@ export class ProductController {
   }
 
   /**
-   * Obtener categorías disponibles
+   * Obtener categorías disponibles (PÚBLICO)
    */
   @Get('categories')
-  @Roles(UserRole.ADMIN, UserRole.CLIENT)
   @ApiOperation({
     summary: 'Obtener categorías',
     description: 'Listar todas las categorías de productos disponibles.',
@@ -200,7 +198,9 @@ export class ProductController {
    * Obtener estadísticas de productos (Solo Admin)
    */
   @Get('admin/stats')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Estadísticas de productos',
     description:
@@ -243,10 +243,9 @@ export class ProductController {
   }
 
   /**
-   * Buscar productos destacados
+   * Buscar productos destacados (PÚBLICO)
    */
   @Get('featured')
-  @Roles(UserRole.ADMIN, UserRole.CLIENT)
   @ApiOperation({
     summary: 'Productos destacados',
     description: 'Obtener productos marcados como destacados.',
@@ -270,10 +269,9 @@ export class ProductController {
   }
 
   /**
-   * Obtener producto por ID
+   * Obtener producto por ID (PÚBLICO)
    */
   @Get(':id')
-  @Roles(UserRole.ADMIN, UserRole.CLIENT)
   @ApiOperation({
     summary: 'Obtener producto',
     description: 'Obtener un producto específico por su ID.',
@@ -305,7 +303,9 @@ export class ProductController {
    * Actualizar producto (Solo Admin)
    */
   @Put(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Actualizar producto',
     description:
@@ -351,7 +351,9 @@ export class ProductController {
    * Actualizar stock de producto (Solo Admin)
    */
   @Patch(':id/stock')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Actualizar stock',
@@ -396,7 +398,9 @@ export class ProductController {
    * Eliminar producto (Solo Admin)
    */
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Eliminar producto',

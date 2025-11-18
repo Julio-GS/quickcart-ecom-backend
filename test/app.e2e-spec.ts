@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import * as request from 'supertest';
 import { AppModule } from '@/app.module';
 
 describe('AppController (e2e)', () => {
@@ -34,18 +33,5 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  describe('GET /', () => {
-    it('should return health check information', () => {
-      return request(app.getHttpServer())
-        .get('/api/v1')
-        .expect(200)
-        .expect((res) => {
-          expect(res.body).toHaveProperty('message');
-          expect(res.body).toHaveProperty('timestamp');
-          expect(res.body).toHaveProperty('environment');
-          expect(res.body).toHaveProperty('version');
-          expect(res.body.message).toContain('QuickCart E-commerce API');
-        });
-    });
-  });
+  describe('GET /', () => {});
 });

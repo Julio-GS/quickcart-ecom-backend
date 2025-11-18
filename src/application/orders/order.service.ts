@@ -22,19 +22,6 @@ import { Order } from '../../domain/entities/order.entity';
 import { OrderStatus } from '../../domain/entities/order.entity';
 import { UserRole } from '../../domain/entities/user.entity';
 
-/**
- * OrderService - Capa de Aplicación (Clean Architecture)
- *
- * Responsabilidades (SRP - Single Responsibility Principle):
- * - Orquestar la lógica de negocio de órdenes
- * - Validar reglas de negocio específicas (stock, totales, estados)
- * - Transformar datos entre capas (DTOs <-> Entities)
- * - Manejar transacciones y consistencia de datos
- * - Implementar lógica de autorización de órdenes
- *
- * Depende de abstracciones (DIP - Dependency Inversion Principle):
- * - IOrderRepository en lugar de implementación concreta
- */
 @Injectable()
 export class OrderService {
   private readonly logger = new Logger(OrderService.name);
@@ -43,23 +30,11 @@ export class OrderService {
     @Inject('IOrderRepository')
     private readonly orderRepository: IOrderRepository,
   ) {}
-
-  /**
-   * Obtiene órdenes con filtros, búsqueda y paginación
-   * @param query Parámetros de consulta
-   * @param userRole Rol del usuario que realiza la consulta
-   * @param currentUserId ID del usuario actual (para filtrar si es CLIENT)
-   * @returns Promise<PaginatedOrderResponseDto> Órdenes paginadas
-   */
   async findWithFilters(
     query: OrderQueryDto,
     userRole: UserRole,
     currentUserId?: string,
   ): Promise<PaginatedOrderResponseDto> {
-    this.logger.log(
-      `Buscando órdenes con filtros: ${JSON.stringify(query)}, rol: ${userRole}`,
-    );
-
     // Validar rango de montos
     if (
       query.minAmount &&
