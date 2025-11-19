@@ -12,7 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         const databaseUrl = configService.get<string>('DATABASE_URL');
-        
+
         if (databaseUrl) {
           // Use DATABASE_URL (preferred for production/Vercel)
           return {
@@ -41,8 +41,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             type: 'postgres',
             host: configService.get<string>('DATABASE_HOST', 'localhost'),
             port: configService.get<number>('DATABASE_PORT', 5432),
-            username: configService.get<string>('DATABASE_USERNAME', 'postgres'),
-            password: configService.get<string>('DATABASE_PASSWORD', 'password'),
+            username: configService.get<string>(
+              'DATABASE_USERNAME',
+              'postgres',
+            ),
+            password: configService.get<string>(
+              'DATABASE_PASSWORD',
+              'password',
+            ),
             database: configService.get<string>('DATABASE_NAME', 'quickcart'),
             entities: [__dirname + '/../../domain/entities/*.entity{.ts,.js}'],
             migrations: [__dirname + '/migrations/*{.ts,.js}'],

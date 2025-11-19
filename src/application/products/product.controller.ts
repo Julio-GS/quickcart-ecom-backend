@@ -269,6 +269,33 @@ export class ProductController {
   }
 
   /**
+   * Obtener producto por slug (PÚBLICO)
+   */
+  @Get(':slug')
+  @ApiOperation({
+    summary: 'Obtener producto por slug',
+    description: 'Obtener un producto específico por su slug (URL amigable).',
+  })
+  @ApiParam({
+    name: 'slug',
+    type: 'string',
+    description: 'Slug del producto (ej: iphone-15-pro)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Producto encontrado',
+    type: ProductResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Producto no encontrado',
+  })
+  async findBySlug(@Param('slug') slug: string): Promise<ProductResponseDto> {
+    this.logger.log(`Buscando producto con slug: ${slug}`);
+    return this.productService.findBySlug(slug);
+  }
+
+  /**
    * Obtener producto por ID (PÚBLICO)
    */
   @Get(':id')
