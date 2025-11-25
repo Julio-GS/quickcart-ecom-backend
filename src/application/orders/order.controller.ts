@@ -252,14 +252,18 @@ export class OrderController {
     const userRole = req.user.role;
     const requestingUserId = req.user.sub;
 
+    // Convertir page y limit a número para evitar errores de paginación
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 10;
+
     this.logger.log(
       `Obteniendo historial de órdenes para usuario ${userId}, solicitado por ${requestingUserId}`,
     );
 
     return this.orderService.getUserOrderHistory(
       userId,
-      page,
-      limit,
+      pageNum,
+      limitNum,
       userRole,
       requestingUserId,
     );
