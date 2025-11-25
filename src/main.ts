@@ -57,13 +57,10 @@ async function bootstrap() {
   // CORS configuration - Flexible for development and production
   const corsOrigin = configService.get<string>('CORS_ORIGIN', '*');
   const nodeEnv = configService.get<string>('NODE_ENV', 'development');
-
-  // Development: Allow all origins for testing
-  // Production: Use specific origins from environment variable
   const corsConfig =
-    nodeEnv === 'development'
+    nodeEnv === 'production'
       ? {
-          origin: true, // Allow all origins in development
+          origin: corsOrigin.split(',').map((o) => o.trim()),
           methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
           allowedHeaders: [
             'Content-Type',
@@ -77,32 +74,7 @@ async function bootstrap() {
           optionsSuccessStatus: 200,
         }
       : {
-          origin: (origin, callback) => {
-            // Allow requests with no origin (mobile apps, curl, Postman)
-            if (!origin) return callback(null, true);
-
-            const allowedOrigins = corsOrigin.split(',').map((o) => o.trim());
-
-            // Check if origin is allowed
-            if (
-              allowedOrigins.includes('*') ||
-              allowedOrigins.includes(origin)
-            ) {
-              return callback(null, true);
-            }
-
-            // Allow localhost and Vercel domains for testing
-            if (
-              origin.includes('localhost') ||
-              origin.includes('127.0.0.1') ||
-              origin.includes('vercel.app') ||
-              origin.includes('netlify.app')
-            ) {
-              return callback(null, true);
-            }
-
-            return callback(new Error(`Origin ${origin} not allowed by CORS`));
-          },
+          origin: true, // Permite todo en desarrollo
           methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
           allowedHeaders: [
             'Content-Type',
@@ -121,33 +93,30 @@ async function bootstrap() {
   // Global prefix
   app.setGlobalPrefix('api/v1');
 
-  // Swagger documentation (only in development)
-  if (configService.get<string>('NODE_ENV') !== 'production') {
-    const config = new DocumentBuilder()
-      .setTitle('QuickCart E-commerce API')
-      .setDescription('Backend API for QuickCart E-commerce platform')
-      .setVersion('1.0')
-      .addBearerAuth(
-        {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-          name: 'JWT',
-          description: 'Enter JWT token',
-          in: 'header',
-        },
-        'JWT-auth',
-      )
-      .build();
-
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api/docs', app, document, {
-      swaggerOptions: {
-        persistAuthorization: true,
+  // Swagger documentation (disponible en todos los entornos)
+  const config = new DocumentBuilder()
+    .setTitle('QuickCart E-commerce API')
+    .setDescription('Backend API for QuickCart E-commerce platform')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
       },
-    });
-  }
+      'JWT-auth',
+    )
+    .build();
 
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
   const port = configService.get<number>('PORT', 3001);
 
   await app.listen(port);
