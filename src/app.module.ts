@@ -11,6 +11,7 @@ import { OrderModule } from './application/orders/order.module';
 import { configValidationSchema } from './shared/config/env.validation';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PaymentsModule } from './application/payments/payments.module';
 
 @Module({
   imports: [
@@ -37,8 +38,7 @@ import { AppService } from './app.service';
     UserModule,
     ProductModule,
     OrderModule,
-
-    // Future modules
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
