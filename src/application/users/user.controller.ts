@@ -170,12 +170,17 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @GetUser() currentUser: User,
   ): Promise<UserResponseDto> {
-    // Los usuarios pueden actualizar su propio perfil, los ADMIN pueden actualizar cualquiera
-    if (currentUser.role !== UserRole.ADMIN && currentUser.id !== id) {
-      throw new ForbiddenException('No autorizado para actualizar este perfil');
+    // Permitir que el usuario autenticado actualice su propio perfil por ID
+    // Los ADMIN pueden actualizar cualquier usuario
+    // Los CLIENT solo pueden actualizarse a sí mismos
+    console.log('Updating user:', id, 'by', currentUser.id);
+    if (
+      currentUser.role === UserRole.ADMIN ||
+      (currentUser.role === UserRole.CLIENT && currentUser.id === id)
+    ) {
+      return this.userService.update(id, updateUserDto);
     }
-
-    return this.userService.update(id, updateUserDto);
+    throw new ForbiddenException('No autorizado para actualizar este perfil');
   }
 
   /**

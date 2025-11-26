@@ -70,7 +70,7 @@ export class UserRepository implements IUserRepository {
       { id },
       {
         ...updateData,
-        updatedAt: new Date(),
+        updatedAt: new Date(), // Usar camelCase para coincidir con la columna y entidad
       },
     );
 
