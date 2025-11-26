@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { Repository, SelectQueryBuilder, Between } from 'typeorm';
 import { Product } from '../../domain/entities/product.entity';
 import { IProductRepository } from '../../application/products/interfaces/product-repository.interface';
 import {
@@ -297,8 +297,10 @@ export class ProductRepository implements IProductRepository {
     const [total, lowStock, outOfStock, featured] = await Promise.all([
       this.count(),
       this.productRepository.count({
-        where: 'stock > 0 AND stock < 10',
-      } as any),
+        where: {
+          stock: Between(1, 9),
+        },
+      }),
       this.productRepository.count({
         where: { stock: 0 },
       }),
