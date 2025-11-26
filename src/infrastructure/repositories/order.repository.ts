@@ -330,7 +330,6 @@ export class OrderRepository implements IOrderRepository {
       this.orderRepository
         .createQueryBuilder('order')
         .select('COALESCE(SUM(order.totalAmount), 0)', 'total')
-        .where('order.deletedAt IS NULL')
         .getRawOne()
         .then((result) => parseFloat(result.total)),
       this.orderRepository
