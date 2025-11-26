@@ -16,6 +16,7 @@ export enum OrderStatus {
   PROCESSING = 'Processing',
   SHIPPED = 'Shipped',
   DELIVERED = 'Delivered',
+  CANCELLED = 'Cancelled',
 }
 
 /**
@@ -97,6 +98,9 @@ export class Order {
   }
 
   canBeCancelled(): boolean {
-    return [OrderStatus.PENDING, OrderStatus.PROCESSING].includes(this.status);
+    // Permitir cancelar si no está ya cancelada ni entregada
+    return ![OrderStatus.CANCELLED, OrderStatus.DELIVERED].includes(
+      this.status,
+    );
   }
 }

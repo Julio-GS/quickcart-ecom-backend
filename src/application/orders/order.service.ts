@@ -464,11 +464,24 @@ export class OrderService {
     currentStatus: OrderStatus,
     newStatus: OrderStatus,
   ): void {
+    // Permitir transición a Cancelled desde cualquier estado excepto Delivered y Cancelled
+    if (newStatus === OrderStatus.CANCELLED) {
+      if (
+        [OrderStatus.DELIVERED, OrderStatus.CANCELLED].includes(currentStatus)
+      ) {
+        throw new ConflictException(
+          `No se puede cancelar una orden en estado ${currentStatus}`,
+        );
+      }
+      return;
+    }
+
     const validTransitions: Record<OrderStatus, OrderStatus[]> = {
-      [OrderStatus.PENDING]: [OrderStatus.PROCESSING, OrderStatus.DELIVERED], // Se puede cancelar via soft delete
+      [OrderStatus.PENDING]: [OrderStatus.PROCESSING, OrderStatus.DELIVERED],
       [OrderStatus.PROCESSING]: [OrderStatus.SHIPPED, OrderStatus.DELIVERED],
       [OrderStatus.SHIPPED]: [OrderStatus.DELIVERED],
-      [OrderStatus.DELIVERED]: [], // Estado final
+      [OrderStatus.DELIVERED]: [],
+      [OrderStatus.CANCELLED]: [],
     };
 
     if (!validTransitions[currentStatus]?.includes(newStatus)) {
