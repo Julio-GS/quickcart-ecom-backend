@@ -27,6 +27,15 @@ export class StripePaymentDto {
   description?: string;
 
   @IsString()
+  productName: string;
+
+  @IsString()
+  productDescription?: string;
+
+  @IsString()
+  productImage?: string;
+
+  @IsString()
   successUrl?: string;
 
   @IsString()

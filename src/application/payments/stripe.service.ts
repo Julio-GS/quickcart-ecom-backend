@@ -20,7 +20,10 @@ export class StripeService {
             price_data: {
               currency: dto.currency,
               product_data: {
-                name: dto.description || 'Order payment',
+                name: dto.productName,
+                description:
+                  dto.productDescription || dto.description || 'Order payment',
+                images: dto.productImage ? [dto.productImage] : [],
               },
               unit_amount: dto.amount,
             },
