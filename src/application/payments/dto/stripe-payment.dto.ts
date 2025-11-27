@@ -25,4 +25,10 @@ export class StripePaymentDto {
 
   @IsString()
   description?: string;
+
+  @IsString()
+  successUrl?: string;
+
+  @IsString()
+  cancelUrl?: string;
 }

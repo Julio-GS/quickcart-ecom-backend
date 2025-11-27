@@ -11,28 +11,28 @@ export class StripeService {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   }
 
-  async createPaymentIntent(dto: StripePaymentDto) {
+  async createCheckoutSession(dto: StripePaymentDto) {
     try {
-      // 1. Crear PaymentMethod con el token de test
-      const paymentMethod = await this.stripe.paymentMethods.create({
-        type: 'card',
-        card: { token: dto.stripeToken },
+      const session = await this.stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: dto.currency,
+              product_data: {
+                name: dto.description || 'Order payment',
+              },
+              unit_amount: dto.amount,
+            },
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        customer_email: dto.email,
+        success_url: dto.successUrl || 'https://localhost:3001/success',
+        cancel_url: dto.cancelUrl || 'https://localhost:3001/cancel',
       });
-
-      // 2. Crear PaymentIntent usando el PaymentMethod
-      const paymentIntent = await this.stripe.paymentIntents.create({
-        amount: dto.amount,
-        currency: dto.currency,
-        description: dto.description || 'Order payment',
-        receipt_email: dto.email,
-        payment_method: paymentMethod.id,
-        confirm: true,
-        automatic_payment_methods: {
-          enabled: true,
-          allow_redirects: 'never',
-        },
-      });
-      return paymentIntent;
+      return session;
     } catch (error) {
       this.logger.error('Stripe error', error);
       throw error;

@@ -18,11 +18,11 @@ export class StripeController {
   @Post('test')
   @HttpCode(HttpStatus.OK)
   async testPayment(@Body() dto: StripePaymentDto) {
-    const paymentIntent = await this.stripeService.createPaymentIntent(dto);
+    const session = await this.stripeService.createCheckoutSession(dto);
     return {
-      id: paymentIntent.id,
-      status: paymentIntent.status,
-      client_secret: paymentIntent.client_secret,
+      id: session.id,
+      url: session.url,
+      status: session.status,
     };
   }
 }
