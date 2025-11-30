@@ -10,8 +10,9 @@ import {
 import { Type } from 'class-transformer';
 
 export class CartItemDto {
-  @IsUUID()
-  productId: string;
+  @IsInt()
+  @Min(1)
+  productId: number;
 
   @IsInt()
   @Min(1)

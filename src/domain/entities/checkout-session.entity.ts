@@ -25,7 +25,7 @@ export class CheckoutSession {
   @Column({ name: 'cart_data', type: 'jsonb' })
   cartData: {
     items: Array<{
-      productId: string;
+      productId: number;
       quantity: number;
       price: number;
     }>;
