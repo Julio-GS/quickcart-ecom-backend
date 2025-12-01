@@ -54,6 +54,7 @@ export class UserController {
    * Obtiene todos los usuarios (Solo ADMIN)
    */
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({
     summary: 'Obtener todos los usuarios',
@@ -81,6 +82,7 @@ export class UserController {
    * Obtiene un usuario por ID (ADMIN puede ver cualquiera, USER solo su propio perfil)
    */
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Obtener usuario por ID',
     description:
@@ -128,6 +130,7 @@ export class UserController {
    * Actualiza un usuario (ADMIN puede actualizar cualquiera, USER solo su propio perfil)
    */
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Actualizar usuario',
     description:
@@ -189,6 +192,7 @@ export class UserController {
    * Elimina un usuario (Solo ADMIN)
    */
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
@@ -229,6 +233,7 @@ export class UserController {
    * Obtiene estadísticas de usuarios (Solo ADMIN)
    */
   @Get('admin/stats')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({
     summary: 'Obtener estadísticas de usuarios',
