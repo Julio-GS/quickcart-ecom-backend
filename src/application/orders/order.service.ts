@@ -72,7 +72,7 @@ export class OrderService {
     };
 
     // Preparar filtros aplicados
-    const filters: any = {};
+    const filters: Record<string, unknown> = {};
     if (query.status) filters.status = query.status;
     if (query.userId) filters.userId = query.userId;
     if (query.minAmount || query.maxAmount) {

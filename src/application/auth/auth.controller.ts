@@ -20,6 +20,7 @@ import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto, AuthResponseDto } from './dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { GetUser } from './decorators/get-user.decorator';
+import { User } from '../../domain/entities/user.entity';
 
 /**
  * AuthController - Controlador de autenticación
@@ -118,7 +119,7 @@ export class AuthController {
     status: 401,
     description: 'Token JWT inválido o expirado',
   })
-  getProfile(@GetUser() user: any) {
+  getProfile(@GetUser() user: User) {
     return {
       id: user.id,
       email: user.email,
@@ -161,7 +162,7 @@ export class AuthController {
     status: 401,
     description: 'Token inválido o expirado',
   })
-  verifyToken(@GetUser() user: any) {
+  verifyToken(@GetUser() user: User) {
     return {
       valid: true,
       user: {

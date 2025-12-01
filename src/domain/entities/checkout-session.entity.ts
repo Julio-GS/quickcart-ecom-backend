@@ -33,9 +33,10 @@ export class CheckoutSession {
   };
 
   @Column({ name: 'metadata', type: 'jsonb', nullable: true })
-  metadata: Record<string, any> | null;
+  metadata: Record<string, string | number | boolean> | null;
 
   @Column({ name: 'status', type: 'varchar', default: 'pending' })
+  @Index() // Índice para filtrar por estado
   status: 'pending' | 'completed' | 'expired';
 
   @CreateDateColumn({ name: 'created_at' })
@@ -46,5 +47,6 @@ export class CheckoutSession {
     type: 'timestamp',
     default: () => "NOW() + INTERVAL '1 hour'",
   })
+  @Index() // Índice para queries de cleanup de sesiones expiradas
   expiresAt: Date;
 }

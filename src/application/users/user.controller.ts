@@ -10,6 +10,7 @@ import {
   HttpStatus,
   HttpCode,
   ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -44,8 +45,9 @@ import { User, UserRole } from '../../domain/entities/user.entity';
 @ApiTags('Users')
 @Controller('users')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard, RolesGuard)
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
+
   constructor(private readonly userService: UserService) {}
 
   /**
@@ -173,7 +175,7 @@ export class UserController {
     // Permitir que el usuario autenticado actualice su propio perfil por ID
     // Los ADMIN pueden actualizar cualquier usuario
     // Los CLIENT solo pueden actualizarse a sí mismos
-    console.log('Updating user:', id, 'by', currentUser.id);
+    this.logger.log(`Usuario ${currentUser.id} actualizando perfil ${id}`);
     if (
       currentUser.role === UserRole.ADMIN ||
       (currentUser.role === UserRole.CLIENT && currentUser.id === id)

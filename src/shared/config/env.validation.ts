@@ -32,4 +32,11 @@ export const configValidationSchema = Joi.object({
 
   // Security
   BCRYPT_SALT_ROUNDS: Joi.number().min(10).max(15).default(12),
+
+  // Stripe Payment
+  STRIPE_SECRET_KEY: Joi.string().optional(),
+  STRIPE_WEBHOOK_SECRET: Joi.string().optional(),
+
+  // Checkout Session
+  SESSION_EXPIRATION_HOURS: Joi.number().positive().default(1),
 }).unknown(true); // Allow unknown environment variables

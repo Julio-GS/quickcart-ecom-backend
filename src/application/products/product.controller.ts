@@ -14,6 +14,7 @@ import {
   Put,
   ParseIntPipe,
   ValidationPipe,
+  Header,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -98,6 +99,8 @@ export class ProductController {
    * Obtener productos con filtros y paginación (PÚBLICO)
    */
   @Get()
+  @Header('Cache-Control', 'public, max-age=300, s-maxage=600') // 5 min client, 10 min CDN
+  @Header('Vary', 'Accept-Encoding')
   @ApiOperation({
     summary: 'Listar productos',
     description:
@@ -171,6 +174,8 @@ export class ProductController {
    * Obtener categorías disponibles (PÚBLICO)
    */
   @Get('categories')
+  @Header('Cache-Control', 'public, max-age=3600, s-maxage=7200') // 1 hora client, 2 horas CDN
+  @Header('Vary', 'Accept-Encoding')
   @ApiOperation({
     summary: 'Obtener categorías',
     description: 'Listar todas las categorías de productos disponibles.',
@@ -246,6 +251,8 @@ export class ProductController {
    * Buscar productos destacados (PÚBLICO)
    */
   @Get('featured')
+  @Header('Cache-Control', 'public, max-age=600, s-maxage=1800') // 10 min client, 30 min CDN
+  @Header('Vary', 'Accept-Encoding')
   @ApiOperation({
     summary: 'Productos destacados',
     description: 'Obtener productos marcados como destacados.',

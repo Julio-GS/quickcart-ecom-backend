@@ -82,7 +82,7 @@ export class ProductService {
     };
 
     // Preparar filtros aplicados
-    const filters: any = {};
+    const filters: Record<string, unknown> = {};
     if (query.search) filters.search = query.search;
     if (query.category) filters.category = query.category;
     if (query.minPrice || query.maxPrice) {
